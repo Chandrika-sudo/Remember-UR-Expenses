@@ -1,13 +1,14 @@
 import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:5000/api';
+
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api';
 
 const api = axios.create({
   baseURL: API_BASE_URL,
   timeout: 10000,
 });
 
-// Request interceptor to add auth token
+
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('token');
@@ -16,54 +17,52 @@ api.interceptors.request.use(
     }
     return config;
   },
-  (error) => {
-    return Promise.reject(error);
-  }
+  (error) => Promise.reject(error)
 );
 
-// Response interceptor to handle errors
+// ✅ Response interceptor to handle errors globally
 api.interceptors.response.use(
   (response) => response,
   (error) => {
     console.error('API Error:', error);
-    
+
     if (error.response?.status === 401) {
       localStorage.removeItem('token');
       localStorage.removeItem('user');
       window.location.href = '/signin';
     }
-    
+
     return Promise.reject(error);
   }
 );
 
-// Auth API
+// ✅ Auth API
 export const authAPI = {
-  signin: (email, password) => 
+  signin: (email, password) =>
     api.post('/auth/signin', { email, password }),
-  
-  signup: (userData) => 
+
+  signup: (userData) =>
     api.post('/auth/signup', userData),
-  
-  getMe: () => 
+
+  getMe: () =>
     api.get('/auth/me'),
 };
 
-// Transactions API
+// ✅ Transactions API
 export const transactionsAPI = {
-  create: (transactionData) => 
+  create: (transactionData) =>
     api.post('/transactions', transactionData),
-  
-  getAll: (month, year) => 
+
+  getAll: (month, year) =>
     api.get(`/transactions?month=${month}&year=${year}`),
-  
-  delete: (id) => 
+
+  delete: (id) =>
     api.delete(`/transactions/${id}`),
 };
 
-// Dashboard API
+// ✅ Dashboard API
 export const dashboardAPI = {
-  getData: () => 
+  getData: () =>
     api.get('/dashboard'),
 };
 

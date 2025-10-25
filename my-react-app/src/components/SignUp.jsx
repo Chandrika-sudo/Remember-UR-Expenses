@@ -13,7 +13,7 @@ const SignUp = () => {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  
+
   const { signup } = useAuth();
   const navigate = useNavigate();
 
@@ -48,35 +48,40 @@ const SignUp = () => {
     };
 
     const result = await signup(userData);
-    
+
     if (result.success) {
       navigate('/dashboard');
     } else {
       setError(result.message);
     }
-    
+
     setLoading(false);
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4">
+    <div className="min-h-screen flex items-center justify-center p-4 bg-purple-900">
       <div className="bg-white/10 backdrop-blur-lg rounded-3xl p-8 w-full max-w-md shadow-2xl border border-white/20">
+        {/* Logo */}
         <div className="flex justify-center mb-6">
           <div className="text-cyan-400">
             <FaLeaf size={48} />
           </div>
         </div>
-        
+
+        {/* Heading */}
         <h2 className="text-4xl font-bold text-white text-center mb-2">Create Account</h2>
         <p className="text-cyan-300 text-center mb-8">Join us to track your finances</p>
-        
+
+        {/* Error Message */}
         {error && (
           <div className="bg-red-500/20 border border-red-500/50 text-red-300 px-4 py-3 rounded-xl mb-6">
             {error}
           </div>
         )}
-        
+
+        {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-5">
+          {/* Name */}
           <div className="relative">
             <div className="absolute left-4 top-4 text-cyan-400">
               <FaUser />
@@ -92,6 +97,7 @@ const SignUp = () => {
             />
           </div>
 
+          {/* Email */}
           <div className="relative">
             <div className="absolute left-4 top-4 text-cyan-400">
               <FaEnvelope />
@@ -106,7 +112,8 @@ const SignUp = () => {
               required
             />
           </div>
-          
+
+          {/* Password */}
           <div className="relative">
             <div className="absolute left-4 top-4 text-cyan-400">
               <FaLock />
@@ -122,6 +129,7 @@ const SignUp = () => {
             />
           </div>
 
+          {/* Confirm Password */}
           <div className="relative">
             <div className="absolute left-4 top-4 text-cyan-400">
               <FaLock />
@@ -137,6 +145,7 @@ const SignUp = () => {
             />
           </div>
 
+          {/* Initial Balance */}
           <div className="relative">
             <div className="absolute left-4 top-4 text-cyan-400">
               <FaMoneyBillWave />
@@ -153,6 +162,7 @@ const SignUp = () => {
             />
           </div>
 
+          {/* Submit Button */}
           <button
             type="submit"
             disabled={loading}
@@ -169,6 +179,7 @@ const SignUp = () => {
           </button>
         </form>
 
+        {/* Footer */}
         <p className="text-white/70 text-center mt-6">
           Already have an account?{' '}
           <Link to="/signin" className="text-cyan-400 hover:underline font-semibold">

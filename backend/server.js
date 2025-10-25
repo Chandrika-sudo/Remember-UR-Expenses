@@ -17,7 +17,7 @@ app.use(cors());
 app.use(express.json());
 
 // MongoDB Connection
-mongoose.connect('mongodb://localhost:27017/finance_manager', {
+mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
@@ -43,6 +43,14 @@ const transactionSchema = new mongoose.Schema({
 
 const User = mongoose.model('User', userSchema);
 const Transaction = mongoose.model('Transaction', transactionSchema);
+
+mongoose.connection.once('open', () => {
+  console.log('✅ MongoDB connected successfully!');
+});
+mongoose.connection.on('error', (err) => {
+  console.error('❌ MongoDB connection error:', err);
+});
+
 
 // Middleware to verify JWT
 const authenticateToken = async (req, res, next) => {
